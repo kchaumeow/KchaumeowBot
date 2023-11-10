@@ -4,15 +4,22 @@ dotenv.config();
 const token = process.env.TOKEN;
 import Telegraf from 'telegraf';
 
+const messages = [];
+
 const app = express()
 const bot = new Telegraf.Telegraf(token)
+
+app.get("/", (req, res) => {
+    res.send(messages);
+})
+
 
 bot.start(ctx => {
     ctx.reply('Welcome, bro')
 })
 
 bot.on('text', ctx => {
-    ctx.reply('just text')
+    messages.push(ctx.update.message.text);
 })
 
 bot.launch()
